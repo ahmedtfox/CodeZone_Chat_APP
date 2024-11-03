@@ -13,7 +13,8 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   socket.on("message", (msg) => {
-    console.log("message: " + msg);
+    console.log("message from =>" + socket.id + " :" + msg);
+    io.emit("send_msg_to_all_users", msg);
   });
 });
 server.listen(3000, () => {
