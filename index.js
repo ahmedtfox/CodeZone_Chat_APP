@@ -16,7 +16,15 @@ io.on("connection", (socket) => {
     console.log("message from =>" + socket.id + " :" + msg);
     io.emit("send_msg_to_all_users", msg);
   });
+  socket.on("show_typing_status", () => {
+    socket.broadcast.emit("show_typing_status");
+  });
+
+  socket.on("stop_typing", () => {
+    socket.broadcast.emit("stop_typing");
+  });
 });
+
 server.listen(3000, () => {
   console.log("server running at http://localhost:3000");
 });

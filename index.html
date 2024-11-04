@@ -59,6 +59,7 @@
   <body>
     <ul id="messages"></ul>
     <form id="form" action="">
+      <p id="typing_status"></p>
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
@@ -68,6 +69,7 @@
       const form = document.getElementById("form");
       const input = document.getElementById("input");
       const messages = document.getElementById("messages");
+      const typing_status = document.getElementById("typing_status");
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -82,6 +84,24 @@
         item.textContent = msg;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      input.addEventListener("keydown", () => {
+        socket.emit("show_typing_status");
+      });
+
+      socket.on("show_typing_status", () => {
+        typing_status.innerHTML = "Client Is Typing...";
+      });
+
+      input.addEventListener("keyup", () => {
+        socket.emit("stop_typing");
+      });
+
+      socket.on("stop_typing", () => {
+        setTimeout(() => {
+          typing_status.innerHTML = "";
+        }, 3000);
       });
     </script>
   </body>
