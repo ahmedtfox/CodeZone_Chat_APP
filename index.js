@@ -5,17 +5,21 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const app = express();
 const server = createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: "https://example.com",
+    origin: "http://127.0.0.1:5500",
   },
 });
 
 app.use(cors());
-app.get("/", (req, res) => {
-  res.sendFile(join(__dirname, "index.html"));
+/* 
+app.get("/", (req, res, next) => {
+  res.sendFile(join(__dirname, "index.html")); 
+  console.log("connect");
+  next();
 });
-
+ */
 io.on("connection", (socket) => {
   socket.on("message", (msg) => {
     console.log("message from =>" + socket.id + " :" + msg);
